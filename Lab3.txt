@@ -1,0 +1,46 @@
+separate_parity([H|T],[H|E],O):-
+    0 is H mod 2,
+    separate_parity(T,E,O).
+separate_parity([H|T],E,[H|O]):-
+    not(0 is H mod 2),
+    separate_parity(T,E,O).
+separate_parity([],[],[]).
+
+
+member(X, [X|_]).
+member(X, [_|T]):-member(X,T).
+
+remove_duplicates([H|T],R):-
+    member(H,T),!,
+    remove_duplicates(T,R).  
+remove_duplicates([H|T],[H|R]):-
+    not(member(H,T)),
+    remove_duplicates(T,R).
+remove_duplicates([],[]).
+
+remove_duplicates2([],R,R).
+remove_duplicates2([H|T],RP,R):-
+    member(H,RP),
+    remove_duplicates2(T,RP,R).
+
+remove_duplicates2([H|T],RP,R):-
+    not(member(H,RP)),
+    remove_duplicates2(T,[H|RP],R).
+
+replace_all(X,Y,[X|T],[Y|R]):-
+    !,
+    replace_all(X,Y,T,R).
+replace_all(_,_,[],[]).
+replace_all(X,Y,[H|T],[H|R]):-
+    replace_all(X,Y,T,R).
+
+drop_k1([H|T],K,1,R):-
+    !,
+    drop_k1(T,K,K,R).
+drop_k1([H|T],K,ACC,[H|R]):-
+    ACC1 is ACC-1,
+    drop_k1(T,K,ACC1,R).
+drop_k1([],_,_,[]).
+
+drop_k(L,K,R):-
+    drop_k1(L,K,K,R).
